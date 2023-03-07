@@ -1,0 +1,125 @@
+package tech.stl.appointment.entity;
+
+import java.time.LocalDate;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.validation.constraints.Future;
+import javax.validation.constraints.NotEmpty;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+@Entity
+@SQLDelete(sql = "UPDATE appointment SET deleted = true WHERE appointmentId=?")
+@Where(clause = "deleted = false")
+public class Appointment {
+    @Id
+    private int appointmentId;
+    
+    @Future(message =" Future Date required")
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate  appointmentDate;
+    @NotEmpty(message = "appointment timing required")
+    private String appointmentSlot;
+    
+    
+    private Status status;
+   
+    private String consultationType;
+    
+    private String message;
+   
+    private boolean deleted = Boolean.FALSE;
+    
+    private int doctorId;
+    private int patientId;
+    public int getAppointmentId() {
+        return appointmentId;
+    }
+    public void setAppointmentId(int appointmentId) {
+        this.appointmentId = appointmentId;
+    }
+    public LocalDate getAppointmentDate() {
+        return appointmentDate;
+    }
+    public void setAppointmentDate(LocalDate appointmentDate) {
+        this.appointmentDate = appointmentDate;
+    }
+    public String getAppointmentSlot() {
+        return appointmentSlot;
+    }
+    public void setAppointmentSlot(String appointmentSlot) {
+        this.appointmentSlot = appointmentSlot;
+    }
+    public Status getStatus() {
+        return status;
+    }
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+    public String getConsultationType() {
+        return consultationType;
+    }
+    public void setConsultationType(String consultationType) {
+        this.consultationType = consultationType;
+    }
+    public String getMessage() {
+        return message;
+    }
+    public void setMessage(String message) {
+        this.message = message;
+    }
+    public boolean isDeleted() {
+        return deleted;
+    }
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
+    public int getDoctorId() {
+        return doctorId;
+    }
+    public void setDoctorId(int doctorId) {
+        this.doctorId = doctorId;
+    }
+    public int getPatientId() {
+        return patientId;
+    }
+    public void setPatientId(int patientId) {
+        this.patientId = patientId;
+    }
+    
+    public Appointment(int appointmentId, @NotEmpty(message = "appointment timing required") String appointmentSlot,
+            Status status, @NotEmpty String consultationType, String message, boolean deleted, int doctorId,
+            int patientId) {
+        super();
+        this.appointmentId = appointmentId;
+        this.appointmentSlot = appointmentSlot;
+        this.status = status;
+        this.consultationType = consultationType;
+        this.message = message;
+        this.deleted = deleted;
+        this.doctorId = doctorId;
+        this.patientId = patientId;
+    }
+    
+    public Appointment(@Future(message = " Future Date required") LocalDate appointmentDate) {
+        super();
+        this.appointmentDate = appointmentDate;
+    }
+    public Appointment() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+    @Override
+    public String toString() {
+        return "Appointment [appointmentId=" + appointmentId + ", appointmentDate=" + appointmentDate
+                + ", appointmentSlot=" + appointmentSlot + ", consultationType=" + consultationType + ", message="
+                + message + ", deleted=" + deleted + ", doctorId=" + doctorId + ", patientId=" + patientId + "]";
+    }
+    
+}
